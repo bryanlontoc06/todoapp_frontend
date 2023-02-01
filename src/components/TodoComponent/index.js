@@ -24,6 +24,7 @@ const Todo = () => {
             <input type="text" className="shadow-xl block w-full px-3 py-2 rounded-md border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-transparent"
             placeholder="Add Todo"
             value={todoItem}
+            disabled={!todoItem}
             onChange={(e) => handleOnChange(e)}
             />
             <button className="shadow-lg py-2 px-5 rounded-3xl bg-sky-500 hover:bg-sky-400 text-white shadow-sky-500/50">Add</button>
