@@ -27,7 +27,7 @@ const TodoItem = ({item, todos, setTodos}) => {
     const checkedItem = todos.filter((todo) => {
       return todo.id === id
     })
-    checkedItem[0].isDone = e.target.checked;
+    checkedItem[0].isCompleted = e.target.checked;
   }
 
   const handleEditInputChange = (e) => {

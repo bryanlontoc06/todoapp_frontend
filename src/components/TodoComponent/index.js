@@ -6,12 +6,12 @@ const Todo = () => {
       {
         id: 1,
         text: 'todo 1',
-        isDone: false,
+        isCompleted: false,
       }, 
       {
         id: 2,
         text: 'todo 2',
-        isDone: false
+        isCompleted: false
       }, 
     ])
     const [todoItem, setTodoItem] = useState('')
