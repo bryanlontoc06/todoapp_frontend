@@ -2,14 +2,23 @@ import {useState} from 'react'
 import TodoItemComponent from './TodoItem'
 
 const Todo = () => {
-    const [todos, setTodos] = useState(['this is a todo 1', 
-    'this is a todo 2'
+    const [todos, setTodos] = useState([
+      {
+        id: 1,
+        text: 'todo 1',
+        isDone: false,
+      }, 
+      {
+        id: 2,
+        text: 'todo 2',
+        isDone: false
+      }, 
     ])
     const [todoItem, setTodoItem] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setTodos([...todos, todoItem])
+        setTodos([...todos, {id: todos.length + 1, text: todoItem}])
         setTodoItem('')
     }
 
@@ -24,10 +33,9 @@ const Todo = () => {
             <input type="text" className="shadow-xl block w-full px-3 py-2 rounded-md border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-transparent"
             placeholder="Add Todo"
             value={todoItem}
-
             onChange={(e) => handleOnChange(e)}
             />
-            <button disabled={!todoItem} className="shadow-lg py-2 px-5 rounded-3xl bg-sky-500 hover:bg-sky-400 text-white shadow-sky-500/50">Add</button>
+            <button disabled={!todoItem || (todoItem.trim() === '')} className={`shadow-lg py-2 px-5 rounded-3xl bg-sky-500 ${todoItem && `hover:bg-sky-400`} text-white shadow-sky-500/50`}>Add</button>
         </form>
         <br />
         <div className="flex flex-col gap-2">
@@ -35,7 +43,7 @@ const Todo = () => {
             return (
               <TodoItemComponent 
                 key={i} 
-                index={i} 
+                id={item.id} 
                 item={item} 
                 todos={todos} 
                 setTodos={setTodos} 
