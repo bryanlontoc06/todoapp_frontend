@@ -1,13 +1,17 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import axios from 'axios'
 import EditIcon from '@/components/svgs/EditIcon.svg'
 import DeleteIcon from '@/components/svgs/DeleteIcon.svg'
 import CancelIcon from '@/components/svgs/CancelIcon.svg'
 import UpdateIcon from '@/components/svgs/UpdateIcon.svg'
+import baseUrl from '@/utils/baseUrl'
 
-const TodoItem = ({item, todos, setTodos}) => {
+const TodoItem = ({item, setIsLoading, handleDeleteItem}) => {
 
+  // const [allTodo, setAllTodo] = useState();
   const [currentTodo, setCurrentTodo] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+
 
   const handleEditItem = (text) => {
     // set editing to true
@@ -16,18 +20,16 @@ const TodoItem = ({item, todos, setTodos}) => {
     setCurrentTodo({ text });
   }
 
-  const handleDeleteItem = (id) => {
-    const removeItem = todos.filter((todo) => {
-      return todo.id !== id;
-    });
-    setTodos(removeItem);
-  }
-
-  const handleChangeCheckbox = (e, id) => {
-    const checkedItem = todos.filter((todo) => {
-      return todo.id === id
-    })
-    checkedItem[0].isCompleted = e.target.checked;
+  const handleChangeCheckbox = async(e, id) => {
+    try {
+      /* This is a way to update the data from the API. */
+      setIsLoading(true)
+      item.isCompleted = e.target.checked;
+      await axios.put(`${baseUrl}/api/todo/${id}/`, item)
+      setIsLoading(false)
+    } catch (e) {
+      console.log({e})
+    }
   }
 
   const handleEditInputChange = (e) => {
@@ -39,12 +41,15 @@ const TodoItem = ({item, todos, setTodos}) => {
     handleUpdateTodo(item.id, currentTodo);
   }
 
-  const handleUpdateTodo = (id, updatedTodo) => {
-    const updatedItem = todos.map((todo) => {
-      return todo.id === id ? updatedTodo : todo;
-    });
+  const handleUpdateTodo = async(id, updatedTodo) => {
+    try {
+      item.text = updatedTodo.text
+      await axios.put(`${baseUrl}/api/todo/${item.id}/`, item)
+      
+    } catch (e) {
+      console.log({e})
+    }
     setIsEditing(false);
-    setTodos(updatedItem);
   }
 
 
@@ -73,6 +78,7 @@ const TodoItem = ({item, todos, setTodos}) => {
             <input 
               type="checkbox" 
               id={item.id}
+              checked={item.isCompleted}
               className="
                 peer
                 cursor-pointer 

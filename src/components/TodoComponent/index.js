@@ -1,29 +1,40 @@
 import {useState} from 'react'
+import axios from 'axios'
 import TodoItemComponent from './TodoItem'
+import baseUrl from '@/utils/baseUrl'
 
-const Todo = () => {
-    const [todos, setTodos] = useState([
-      {
-        id: 1,
-        text: 'todo 1',
-        isCompleted: false,
-      }, 
-      {
-        id: 2,
-        text: 'todo 2',
-        isCompleted: false
-      }, 
-    ])
-    const [todoItem, setTodoItem] = useState('')
+const Todo = ({todos, setAllTodo}) => {
+    const [todoItem, setTodoItem] = useState()
+    const [isLoading, setIsLoading] = useState(false)
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        setTodos([...todos, {id: todos.length + 1, text: todoItem}])
-        setTodoItem('')
+    const retrieveAllTodo = async() => {
+      const dataRes = await axios.get(`${baseUrl}/api/todo/`)
+      const [dataResult] = await Promise.all([dataRes])
+      setAllTodo(dataResult)
+    }
+
+    const handleSubmit = async(e) => {
+      e.preventDefault()
+      await axios.post(`${baseUrl}/api/todo/`, {text: todoItem})
+      retrieveAllTodo()
+      setTodoItem('')
     }
 
     const handleOnChange = (e) => {
       setTodoItem(e.target.value)
+    }
+
+    const handleDeleteItem = async(id) => {
+      try {
+      setIsLoading(true)
+      await axios.delete(`${baseUrl}/api/todo/${id}/`)
+      /* This is a way to get the data from the API. */
+      const dataRes = await axios.get(`${baseUrl}/api/todo/`)
+      retrieveAllTodo()
+      setIsLoading(false)
+      } catch (err) {
+        console.log({err})
+      }
     }
 
 
@@ -39,14 +50,14 @@ const Todo = () => {
         </form>
         <br />
         <div className="flex flex-col gap-2">
-          {todos.map((item, i) => {
+          {todos && todos.data.map((item, i) => {
             return (
               <TodoItemComponent 
                 key={i} 
                 id={item.id} 
                 item={item} 
-                todos={todos} 
-                setTodos={setTodos} 
+                handleDeleteItem={handleDeleteItem}
+                setIsLoading={setIsLoading}
               />
             )
           })}
