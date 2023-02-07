@@ -39,7 +39,7 @@ const Todo = ({todos, setAllTodo}) => {
 
 
   return (
-    <div className='h-screen pt-20 w-6/12 m-auto'>
+    <div className='h-screen pt-20 m-auto w-fit'>
         <form onSubmit={(e) => handleSubmit(e)} className="flex gap-5">
             <input type="text" className="shadow-xl block w-full px-3 py-2 rounded-md border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-transparent"
             placeholder="Add Todo"
