@@ -1,3 +1,3 @@
-const baseUrl = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : 'todoappbackend-production-b84c.up.railway.app';
+const baseUrl = process.env.NODE_ENV !== 'production' ? "http://localhost:8000" : '';
 
 module.exports = baseUrl;
