@@ -1,5 +1,7 @@
-# Live Website 
+## Live Website 
 https://todoapp-frontend-ochre.vercel.app/
+Python Django Rest Framework for Backend deployed using Railway App (w/ limited hrs)
+
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
